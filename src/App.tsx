@@ -41,12 +41,14 @@ function App() {
         ],
     })
     const removeTodolist = (todolistId: string) => {
+        debugger
         const newTodolists = todolists.filter(tl => tl.id !== todolistId)
+        // пропусти те Todolist id которых не равен того Todolist который надо удалить
         setTodolists(newTodolists)
 
-        // удалим таски для тудулиста из стейта где мы храним таски
+        // удалим таски для тудулиста tasks[todolistId] из стейта где мы храним таски
         delete tasks[todolistId]
-        // засетаем в state копию объекта
+        // засетаем в state копию объекта для перерисовки
         setTasks({...tasks})
     }
 
