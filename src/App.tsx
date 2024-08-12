@@ -51,6 +51,7 @@ function App() {
     }
 
     const removeTask = (taskId: string, todolistId: string) => {
+        debugger
         // 1. Найдем таски для тудулиста, в котором будет происходить удаление
         const todolistTasks = tasks[todolistId]
         // 2. Удалим таску по которой кликнули
