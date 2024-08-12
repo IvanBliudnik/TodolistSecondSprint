@@ -87,7 +87,7 @@ function App() {
         // 1. Найдем таски для тудулиста, в котором будет происходить изменение
         const todolistTasks = tasks[todolistId]
         // 2. Пробежимся по таскам и изменим статус таски по которой нажали
-        const newTodolistTasks = todolistTasks.map(t =>
+        const newTodolistTasks: TaskType[] = todolistTasks.map(t =>
             t.id === taskId ? {...t, isDone: taskStatus} : t
         )
         // 3. Перезапишем массив тасок на новый массив, с уже измененным статусом у таски
