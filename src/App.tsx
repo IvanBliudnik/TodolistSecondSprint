@@ -40,77 +40,64 @@ function App() {
             {id: v1(), title: 'GraphQL', isDone: false},
         ],
     })
-    const removeTodolist = (todolistId: string) => {
-        debugger
-        const newTodolists = todolists.filter(tl => tl.id !== todolistId)
-        // пропусти те Todolist id которых не равен того Todolist который надо удалить
-        setTodolists(newTodolists)
 
+    const removeTodolist = (todolistId: string) => {
+        //удаляем тот который не совпадает id
+        setTodolists(todolists.filter(el=>el.id !== todolistId))
         // удалим таски для тудулиста tasks[todolistId] из стейта где мы храним таски
         delete tasks[todolistId]
         // засетаем в state копию объекта для перерисовки
         setTasks({...tasks})
     }
 
-    const removeTask = (taskId: string, todolistId: string) => {
-        debugger
-        // 1. Найдем таски для тудулиста, в котором будет происходить удаление
-        const todolistTasks = tasks[todolistId]
-        // 2. Удалим таску по которой кликнули
-        const newTodolistTasks = todolistTasks.filter(t => t.id !== taskId)
-        // 3. Перезапишем массив тасок на новый (отфильтрованный) массив
-        tasks[todolistId] = newTodolistTasks
-        // 4. Засетаем в state копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks, newTodolistTasks})
+    const removeTask = (todolistId: string, taskId: string) => {
+                                    //сделали копию tasks ...tasks
+                                    //ключ обьекта из которого удаляем таск, стучимся до таск который в тудулист
+        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(el=>el.id !== taskId)})
     }
 
-    const addTask = (title: string, todolistId: string) => {
-        // 1. Создадим новую таску
-        const newTask = {
+    const addTask = (todolistId: string, title: string) => {
+        const newTask:TaskType = {
             id: v1(),
             title: title,
-            isDone: false,
+            isDone: false
         }
-        // 2. Найдем массив тасок для тудулиста, в который будем добавлять новую таску
-        const todolistTasks = tasks[todolistId]
-        // 3. Перезапишем массив тасок на новый массив, добавив в начало новую таску
-        tasks[todolistId] = [newTask, ...todolistTasks]
-        // 4. Засетаем в state копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks})
+                                          //ключ от нашего подьезда [todolistId] кому добавляем
+                                                    //засунули в новый массив newTask
+        setTasks({...tasks, [todolistId]:[...tasks[todolistId], newTask]})
     }
 
-    const changeFilter = (filter: FilterValuesType, todolistId: string) => {
-        const newTodolists = todolists.map(tl => {
-            return tl.id === todolistId ? {...tl, filter} : tl
-        })
-        setTodolists(newTodolists)
+    const changeFilter = (todolistId: string, filter: FilterValuesType) => {
+    //версия для Redux с копией
+        //1. Делаем копию обьекта через map который создаёт новый массив по default
+                                                                               //чтобы не потерять остальные ключи el = {id: todolistID1, title: 'What to learn', filter: 'all'}
+                                                                                // двоеточие для присваивания, а не мутации глубокое вложенность 2
+        setTodolists(todolists.map(el => el.id === todolistId ? {...el,filter} : el))
     }
+        // Для React вот так
+        //     const currentTodo = todolists.find(tl => tl.id === todolistId)
+    //         if(currentTodo) {
+    //             currentTodo.filter = newFilter
+    //             setTodolists([...todolists])
+    //             //новая обязательно коробка [...todolists] для перерисовки изменения local state
+    //         }
+    //     console.log(todolists)
+    // }
 
-    const changeTaskStatus = (taskId: string, taskStatus: boolean, todolistId: string) => {
-        // 1. Найдем таски для тудулиста, в котором будет происходить изменение
-        const todolistTasks = tasks[todolistId]
-        // 2. Пробежимся по таскам и изменим статус таски по которой нажали
-        const newTodolistTasks: TaskType[] = todolistTasks.map(t =>
-            t.id === taskId ? {...t, isDone: taskStatus} : t
-        )
-        // 3. Перезапишем массив тасок на новый массив, с уже измененным статусом у таски
-        tasks[todolistId] = newTodolistTasks
-        // 4. Засетаем в state копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks})
+
+    const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
+        setTasks({...tasks, [todolistId]: [...tasks[todolistId].map(el=>el.id === taskId? {...el,isDone} :el)]})
     }
     return (
         <div className="App">
             {todolists.map(tl => {
-                const allTodolistTasks = tasks[tl.id];
-                let tasksForTodolist = allTodolistTasks;
+                let tasksForTodolist = tasks[tl.id];
                 if (tl.filter === 'active') {
-                    tasksForTodolist = allTodolistTasks.filter(task => !task.isDone);
+                    tasksForTodolist = tasks[tl.id].filter(task => !task.isDone);
                 }
-
                 if (tl.filter === 'completed') {
-                    tasksForTodolist = allTodolistTasks.filter(task => task.isDone);
+                    tasksForTodolist = tasks[tl.id].filter(task => task.isDone);
                 }
-
                 return (
                     <Todolist
                         key={tl.id}
