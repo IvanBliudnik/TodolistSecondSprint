@@ -56,7 +56,7 @@ function App() {
     const removeTask = (todolistId: string, taskId: string) => {
                                     //сделали копию tasks ...tasks
                                     //ключ обьекта из которого удаляем таск, стучимся до таск который в тудулист
-        setTasks((prevState) =>({...tasks, [todolistId]: tasks[todolistId].filter(el=>el.id !== taskId)}))
+        setTasks( (prevState) => ({...tasks, [todolistId]: tasks[todolistId].filter(el=>el.id !== taskId)}))
     }
 
     const addTask = (todolistId: string, title: string) => {
@@ -67,8 +67,10 @@ function App() {
         }
                                           //ключ от нашего подьезда [todolistId] кому добавляем
                                                     //засунули в новый массив newTask
-        setTasks((prevState) => ({...tasks, [todolistId]:[...tasks[todolistId], newTask]}))
+        setTasks((prevState)=>({...prevState, [todolistId]:[...prevState[todolistId], newTask]}))
     }
+    // { ...tasks, ... }: Оператор деструктуризации, который создает поверхностную копию текущего состояния tasks. В этом месте происходит ошибка, здесь должен быть prevState вместо tasks, чтобы работать с актуальным состоянием, как в примере ниже:
+    // [...prevState[todolistId], newTask]: Создает новый массив задач для указанного тудулиста. Оператор деструктуризации ...prevState[todolistId] используется для копирования существующих задач этого тудулиста, а затем добавляется newTask в конец нового массива. Это гарантирует, что новая задача будет добавлена к уже существующему списку задач.
 
     const changeFilter = (todolistId: string, filter: FilterValuesType) => {
     //версия для Redux с копией
