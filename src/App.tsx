@@ -43,17 +43,20 @@ function App() {
 
     const removeTodolist = (todolistId: string) => {
         //удаляем тот который не совпадает id
-        setTodolists(todolists.filter(el=>el.id !== todolistId))
+        // setTodolists(todolists.filter(el=>el.id !== todolistId))
+        //по американски для асинхронности так правильно!!!!!
+        setTodolists((prevState) => todolists.filter(el=>el.id !== todolistId))
         // удалим таски для тудулиста tasks[todolistId] из стейта где мы храним таски
         delete tasks[todolistId]
-        // засетаем в state копию объекта для перерисовки
+        //delete удаляет tasks без перерисовки нам это и не нужно
+        // засетаем в state копию объекта для перерисовки и для REDUX который их ждёт
         setTasks({...tasks})
     }
 
     const removeTask = (todolistId: string, taskId: string) => {
                                     //сделали копию tasks ...tasks
                                     //ключ обьекта из которого удаляем таск, стучимся до таск который в тудулист
-        setTasks({...tasks, [todolistId]: tasks[todolistId].filter(el=>el.id !== taskId)})
+        setTasks((prevState) =>({...tasks, [todolistId]: tasks[todolistId].filter(el=>el.id !== taskId)}))
     }
 
     const addTask = (todolistId: string, title: string) => {
@@ -64,7 +67,7 @@ function App() {
         }
                                           //ключ от нашего подьезда [todolistId] кому добавляем
                                                     //засунули в новый массив newTask
-        setTasks({...tasks, [todolistId]:[...tasks[todolistId], newTask]})
+        setTasks((prevState) => ({...tasks, [todolistId]:[...tasks[todolistId], newTask]}))
     }
 
     const changeFilter = (todolistId: string, filter: FilterValuesType) => {
@@ -72,7 +75,7 @@ function App() {
         //1. Делаем копию обьекта через map который создаёт новый массив по default
                                                                                //чтобы не потерять остальные ключи el = {id: todolistID1, title: 'What to learn', filter: 'all'}
                                                                                 // двоеточие для присваивания, а не мутации глубокое вложенность 2
-        setTodolists(todolists.map(el => el.id === todolistId ? {...el,filter} : el))
+        setTodolists((prevState) => todolists.map(el => el.id === todolistId ? {...el,filter} : el))
     }
         // Для React вот так
         //     const currentTodo = todolists.find(tl => tl.id === todolistId)
@@ -86,7 +89,7 @@ function App() {
 
 
     const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
-        setTasks({...tasks, [todolistId]: [...tasks[todolistId].map(el=>el.id === taskId? {...el,isDone} :el)]})
+        setTasks((prevState) => ({...tasks, [todolistId]: [...tasks[todolistId].map(el=>el.id === taskId? {...el,isDone} :el)]}))
     }
     return (
         <div className="App">
