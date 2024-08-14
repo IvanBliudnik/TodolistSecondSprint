@@ -91,18 +91,15 @@ function App() {
 
 
     const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
-        setTasks((prevState) => ({...tasks, [todolistId]: [...tasks[todolistId].map(el=>el.id === taskId? {...el,isDone} :el)]}))
+        setTasks((prevState) => ({...prevState, [todolistId]: [...prevState[todolistId].map(el=>el.id === taskId? {...el,isDone} :el)]}))
     }
+
+
     return (
         <div className="App">
             {todolists.map(tl => {
                 let tasksForTodolist = tasks[tl.id];
-                if (tl.filter === 'active') {
-                    tasksForTodolist = tasks[tl.id].filter(task => !task.isDone);
-                }
-                if (tl.filter === 'completed') {
-                    tasksForTodolist = tasks[tl.id].filter(task => task.isDone);
-                }
+                debugger
                 return (
                     <Todolist
                         key={tl.id}
