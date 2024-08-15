@@ -2,6 +2,8 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import React, {useState} from 'react';
 import {v1} from "uuid";
+import {Button} from "./Button";
+import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
     id: string
@@ -93,11 +95,22 @@ function App() {
     const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
         setTasks((prevState) => ({...prevState, [todolistId]: [...prevState[todolistId].map(el=>el.id === taskId? {...el,isDone} :el)]}))
     }
-
+    function addTodoList(title:string) {
+        let todolist: TodolistType = {
+            id: v1(),
+            title: title,
+            filter: 'all',
+        };
+        setTodolists([todolist, ...todolists])
+        //отправляем новый обьект в старый массив [tasks, setTasks]
+        //создав копию tasks и добавив новое свойство обьекта [todolist.id]: с пока что пустым массивом[]
+        setTasks({...tasks, [todolist.id]: []})
+    }
 
     return (
         <div className="App">
-            {todolists.map(tl => {
+            <AddItemForm addItem={addTodoList}/>
+                               {todolists.map(tl => {
                 let tasksForTodolist = tasks[tl.id];
                 debugger
                 return (
