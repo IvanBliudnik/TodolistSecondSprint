@@ -54,6 +54,13 @@ function App() {
         // засетаем в state копию объекта для перерисовки и для REDUX который их ждёт
         setTasks({...tasks})
     }
+    const changeTodolistTitle = (todolistId: string, newTitle :string) => {
+       const todolist = todolists.find(el=>el.id === todolistId)
+        if (todolist) {
+            todolist.title = newTitle
+            setTodolists([...todolists])
+        }
+    }
 
     const removeTask = (todolistId: string, taskId: string) => {
                                     //сделали копию tasks ...tasks
@@ -95,6 +102,14 @@ function App() {
     const changeTaskStatus = (taskId: string, isDone: boolean, todolistId: string) => {
         setTasks((prevState) => ({...prevState, [todolistId]: [...prevState[todolistId].map(el=>el.id === taskId? {...el,isDone} :el)]}))
     }
+    const changeTaskTitle = (id: string, newTitle: string, todolistId: string) => {
+        let todolistTask = tasks[todolistId];
+        let task = todolistTask.find(el=>el.id === id);
+        if (task) {
+            task.title = newTitle;
+            setTasks({...tasks})
+        }
+    }
     function addTodoList(title:string) {
         let todolist: TodolistType = {
             id: v1(),
@@ -110,7 +125,7 @@ function App() {
     return (
         <div className="App">
             <AddItemForm addItem={addTodoList}/>
-                               {todolists.map(tl => {
+            {todolists.map(tl => {
                 let tasksForTodolist = tasks[tl.id];
                 debugger
                 return (
@@ -125,6 +140,8 @@ function App() {
                         changeTaskStatus={changeTaskStatus}
                         filter={tl.filter}
                         removeTodolist={removeTodolist}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodolistTitle = {changeTodolistTitle}
                     />
                 );
             })}
