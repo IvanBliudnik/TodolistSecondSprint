@@ -2,7 +2,7 @@ import './App.css';
 import {Todolist} from "./Todolist";
 import React, {useState} from 'react';
 import {v1} from "uuid";
-import {Button} from "./Button";
+// import {Button} from "./Button";
 import {AddItemForm} from "./AddItemForm";
 
 export type TaskType = {
