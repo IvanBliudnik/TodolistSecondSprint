@@ -33,9 +33,9 @@ export default function ButtonAppBar({onChange}: Props) {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         News
                     </Typography>
-                    <MenuButton color="inherit" background={theme.palette.primary.light}>LogiN</MenuButton>
-                    <MenuButton color="inherit">LoGOut</MenuButton>
-                    <MenuButton color="inherit">FAQ</MenuButton>
+                    <MenuButton color="success" background={theme.palette.primary.light}>Login</MenuButton>
+                    <MenuButton color="success">LogOut</MenuButton>
+                    <MenuButton color="success">FAQ</MenuButton>
                     <Switch
                         color={'default'}
                         onChange={onChange}
