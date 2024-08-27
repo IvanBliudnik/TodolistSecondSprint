@@ -1,5 +1,7 @@
 import {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button} from "./Button";
+import Button from "@mui/material/Button";
+import {TextField} from "@mui/material";
+// import {Button} from "./Button";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -29,14 +31,33 @@ export function AddItemForm(props: AddItemFormPropsType) {
         }
     }
 
+    const buttonStyle = {
+        maxWidth: '38px',
+        maxHeight: '38px',
+        minWidth: '38px',
+        minHeight: '38px',
+        background: "green"
+    }
     return <div>
-        <input
+        <TextField
+            error={!!error} //переделали тип state в boolean(false)первый!, потом 2! true
+            id="outlined-basic"
+            label={error ? error : "write something, please"}
+            // helperText={error} //если хотим снизу надпись error-message
+            variant="outlined"
+            size={"small"}
             className={error ? 'error' : ''}
             value={taskTitle}
             onChange={changeTaskTitleHandler}
             onKeyUp={addTaskOnKeyUpHandler}
         />
-        <Button title={'+'} onClick={addItem}/>
-        {error && <div className={'error-message'}>{error}</div>}
+        {/*<input*/}
+        {/*    className={error ? 'error' : ''}*/}
+        {/*    value={taskTitle}*/}
+        {/*    onChange={changeTaskTitleHandler}*/}
+        {/*    onKeyUp={addTaskOnKeyUpHandler}*/}
+        {/*/>*/}
+        <Button style={buttonStyle} variant = "contained" onClick={addItem}>+</Button>
+        {/*{error && <div className={'error-message'}>{error}</div>}*/}
     </div>
 }
