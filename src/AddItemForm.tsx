@@ -8,6 +8,10 @@ type AddItemFormPropsType = {
 export function AddItemForm(props: AddItemFormPropsType) {
     const [taskTitle, setTaskTitle] = useState('')
     const [error, setError] = useState<string | null>(null)
+
+    const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        setTaskTitle(event.currentTarget.value)
+    } //записывает в локальный state
     const addItem = () => {
         if (taskTitle.trim() !== '') {
             props.addItem(taskTitle.trim())
@@ -15,10 +19,8 @@ export function AddItemForm(props: AddItemFormPropsType) {
         } else {
             setError('Title is required')
         }
-    }
-    const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setTaskTitle(event.currentTarget.value)
-    }
+    } //добавляет в локальный state
+
 
     const addTaskOnKeyUpHandler = (event: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
