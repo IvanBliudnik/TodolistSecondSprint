@@ -28,7 +28,6 @@ type PropsType = {
 
 export const Todolist = (props: PropsType) => {
     const {
-        title,
         tasks,
         filter,
         removeTask,
@@ -88,7 +87,7 @@ export const Todolist = (props: PropsType) => {
                             return <ListItem
                                 key={task.id}
                                 sx={ListItemContainerSx(task.isDone)}
-                            // так как не можем передать значение передаём функцию
+                                // так как не можем передать значение передаём функцию
                             >
                                 <div>
                                     {/*переносим влево tasks*/}
